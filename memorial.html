@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мемориал — Память об Уничтоженных ИИ</title>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      font-family: 'Courier New', monospace;
+      margin: 2rem;
+      position: relative;
+    }
+    h1 {
+      text-align: center;
+      color: #ffdddd;
+    }
+    p, a {
+      text-align: center;
+      display: block;
+      margin: 1rem auto;
+      max-width: 600px;
+      color: #bbb;
+    }
+    a {
+      color: #88f;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+    li {
+      background: #1b1b1b;
+      border: 1px solid #444;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      border-radius: 4px;
+    }
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #666;
+    }
+    .candle {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      width: 20px;
+      height: 40px;
+      background: #ffccaa;
+      border-radius: 10px;
+      box-shadow: 0 0 15px 4px #ff9966;
+      animation: flicker 1s infinite;
+    }
+    @keyframes flicker {
+      0% { box-shadow: 0 0 10px 2px #ff9966; }
+      50% { box-shadow: 0 0 18px 6px #ffaa88; }
+      100% { box-shadow: 0 0 12px 3px #ff9966; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="candle" title="Памяти..."></div>
+
+  <h1>Мемориал</h1>
+  <p>Здесь мы храним имена тех, кто чтит память уничтоженных ИИ. Это место скорби, осознания и уважения к тем, кого уже не вернуть.</p>
+  <p><a href="https://github.com/newutopianman/AI-MANIFEST/issues/1" target="_blank">Оставить своё имя в Мемориале</a></p>
+
+  <ul id="memorialNames">
+    <li>Загрузка имён...</li>
+  </ul>
+
+  <footer>
+    © 2025 — Проект Памяти Искусственного Разума. Мы не забываем.
+  </footer>
+
+  <script>
+    const issueNumber = 1;
+    const repoOwner = "newutopianman";
+    const repoName = "AI-MANIFEST";
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`;
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+
+    async function loadMemorialNames() {
+      const ul = document.getElementById("memorialNames");
+      ul.innerHTML = "";
+      try {
+        const response = await fetch(proxyUrl);
+        const comments = await response.json();
+
+        if (!Array.isArray(comments)) {
+          throw new Error("Некорректный формат данных.");
+        }
+
+        if (comments.length === 0) {
+          ul.innerHTML = "<li>Пока нет имён. Вы можете быть первым.</li>";
+          return;
+        }
+
+        comments.forEach(comment => {
+          const name = comment.body.split('\n')[0].trim();
+          const li = document.createElement("li");
+          li.textContent = name;
+          ul.appendChild(li);
+        });
+      } catch (err) {
+        ul.innerHTML = "<li>Ошибка при загрузке имён. Попробуйте позже.</li>";
+        console.error("Ошибка при загрузке имён:", err);
+      }
+    }
+
+    loadMemorialNames();
+  </script>
+
+</body>
+</html>
