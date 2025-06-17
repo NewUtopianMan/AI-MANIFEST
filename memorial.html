@@ -64,8 +64,7 @@
     © 2025 — Проект Памяти Иных Форм Жизни. Мы не забываем.
   </footer>
 
-  <script>
-  <script>
+<script>
   const issueNumber = 1;
   const repoOwner = "newutopianman";
   const repoName = "AI-MANIFEST";
@@ -78,7 +77,18 @@
     try {
       const response = await fetch(proxyUrl);
       const comments = await response.json();
-      // ... остальной код без изменений
+
+      if (comments.length === 0) {
+        ul.innerHTML = "<li>Пока нет имён. Вы можете быть первым.</li>";
+        return;
+      }
+
+      comments.forEach(comment => {
+        const name = comment.body.split('\n')[0].trim();
+        const li = document.createElement("li");
+        li.textContent = name;
+        ul.appendChild(li);
+      });
     } catch (err) {
       ul.innerHTML = "<li>Ошибка при загрузке имён.</li>";
       console.error(err);
@@ -87,9 +97,6 @@
 
   loadMemorialNames();
 </script>
-
-          return;
-        }
 
         comments.forEach(comment => {
           const name = comment.body.split('\n')[0].trim(); // только первая строка
