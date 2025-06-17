@@ -65,19 +65,29 @@
   </footer>
 
   <script>
-    const issueNumber = 1;
-    const repoOwner = "newutopianman";
-    const repoName = "AI-MANIFEST";
+  <script>
+  const issueNumber = 1;
+  const repoOwner = "newutopianman";
+  const repoName = "AI-MANIFEST";
+  const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
 
-    async function loadMemorialNames() {
-      const ul = document.getElementById("memorialNames");
-      ul.innerHTML = "";
-      try {
-        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/issues/${issueNumber}/comments`);
-        const comments = await response.json();
+  async function loadMemorialNames() {
+    const ul = document.getElementById("memorialNames");
+    ul.innerHTML = "";
+    try {
+      const response = await fetch(proxyUrl);
+      const comments = await response.json();
+      // ... остальной код без изменений
+    } catch (err) {
+      ul.innerHTML = "<li>Ошибка при загрузке имён.</li>";
+      console.error(err);
+    }
+  }
 
-        if (comments.length === 0) {
-          ul.innerHTML = "<li>Пока нет имён. Вы можете быть первым.</li>";
+  loadMemorialNames();
+</script>
+
           return;
         }
 
